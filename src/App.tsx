@@ -1,26 +1,75 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter,Route,Routes } from "react-router-dom";
+import Homepage from "./pages/Home"
+import Postpage from "./pages/postpage"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Navbar from "./components/navbar"
+import Footer from "./components/footer"
+
+
+
+
+
+
+
+
+
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        feed: {
+          // Don't cache separate results based on
+          // any of this field's arguments.
+          keyArgs: false,
+
+          // Concatenate the incoming list items with
+          // the existing list items.
+          merge(existing = [], incoming) {
+            return [...existing, ...incoming];
+          }
+        }
+      }
+    }
+  }
+})
+
+const client = new ApolloClient({
+  uri: 'https://hurricane-frigate.glitch.me',
+  cache: cache
+});
+
+
+export interface IApplicationProps{}
+
+const Application: React.FunctionComponent<IApplicationProps>=(props)=>{
+
+return(
+<ApolloProvider client={client}>
+    <BrowserRouter>
+    <Navbar></Navbar>
+        <Routes>
+            <Route path="/" element={<Homepage/>}></Route>
+            <Route path="/posts" element={<Postpage/>}>
+                <Route index element ={<Postpage/>}/>
+                <Route path=":number" element={<Postpage/>}/>
+
+
+
+            </Route>
+
+            
+        </Routes>
+        <Footer></Footer>
+
+    
+    </BrowserRouter>
+    </ApolloProvider>
+)
+
 }
 
-export default App;
+export default Application
