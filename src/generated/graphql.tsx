@@ -13,97 +13,73 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
 };
 
-export type Book = {
-  __typename?: 'Book';
-  author?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-};
-
-export type BooksResponse = {
-  __typename?: 'BooksResponse';
-  books: Array<Book>;
-  hasNextPage: Scalars['Boolean'];
-};
-
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  removeBook: Scalars['Boolean'];
-};
-
-
-export type MutationRemoveBookArgs = {
+export type Articles = {
+  __typename?: 'Articles';
+  body: Scalars['String'];
   id: Scalars['String'];
+  title: Scalars['String'];
+  v: Scalars['Int'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  books: BooksResponse;
+  articlefeed: Array<Articles>;
 };
 
 
-export type QueryBooksArgs = {
+export type QueryArticlefeedArgs = {
   cursor?: InputMaybe<Scalars['String']>;
-  first: Scalars['Int'];
-  searchQuery?: InputMaybe<Scalars['String']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
-export type BooksQueryVariables = Exact<{
+export type ArticlesQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
-  first: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type BooksQuery = { __typename?: 'Query', books: { __typename?: 'BooksResponse', hasNextPage: boolean, books: Array<{ __typename?: 'Book', id: string, title?: string | null, author?: string | null }> } };
+export type ArticlesQuery = { __typename?: 'Query', articlefeed: Array<{ __typename?: 'Articles', id: string, title: string }> };
 
 
-export const BooksDocument = gql`
-    query Books($cursor: String, $first: Int!) {
-  books(cursor: $cursor, first: $first) {
-    books {
-      id
-      title
-      author
-    }
-    hasNextPage
+export const ArticlesDocument = gql`
+    query Articles($cursor: String, $take: Int, $skip: Int) {
+  articlefeed(cursor: $cursor, take: $take, skip: $skip) {
+    id
+    title
   }
 }
     `;
 
 /**
- * __useBooksQuery__
+ * __useArticlesQuery__
  *
- * To run a query within a React component, call `useBooksQuery` and pass it any options that fit your needs.
- * When your component renders, `useBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useArticlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArticlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBooksQuery({
+ * const { data, loading, error } = useArticlesQuery({
  *   variables: {
  *      cursor: // value for 'cursor'
- *      first: // value for 'first'
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
-export function useBooksQuery(baseOptions: Apollo.QueryHookOptions<BooksQuery, BooksQueryVariables>) {
+export function useArticlesQuery(baseOptions?: Apollo.QueryHookOptions<ArticlesQuery, ArticlesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BooksQuery, BooksQueryVariables>(BooksDocument, options);
+        return Apollo.useQuery<ArticlesQuery, ArticlesQueryVariables>(ArticlesDocument, options);
       }
-export function useBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BooksQuery, BooksQueryVariables>) {
+export function useArticlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArticlesQuery, ArticlesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BooksQuery, BooksQueryVariables>(BooksDocument, options);
+          return Apollo.useLazyQuery<ArticlesQuery, ArticlesQueryVariables>(ArticlesDocument, options);
         }
-export type BooksQueryHookResult = ReturnType<typeof useBooksQuery>;
-export type BooksLazyQueryHookResult = ReturnType<typeof useBooksLazyQuery>;
-export type BooksQueryResult = Apollo.QueryResult<BooksQuery, BooksQueryVariables>;
+export type ArticlesQueryHookResult = ReturnType<typeof useArticlesQuery>;
+export type ArticlesLazyQueryHookResult = ReturnType<typeof useArticlesLazyQuery>;
+export type ArticlesQueryResult = Apollo.QueryResult<ArticlesQuery, ArticlesQueryVariables>;

@@ -24,11 +24,11 @@ const cache = new InMemoryCache({
         feed: {
           // Don't cache separate results based on
           // any of this field's arguments.
-          keyArgs: false,
+          
 
           // Concatenate the incoming list items with
           // the existing list items.
-          merge(existing = [], incoming) {
+          merge(existing , incoming) {
             return [...existing, ...incoming];
           }
         }
@@ -38,7 +38,7 @@ const cache = new InMemoryCache({
 })
 
 const client = new ApolloClient({
-  uri: 'https://hurricane-frigate.glitch.me',
+  uri: 'http://localhost:4000/graphql',
   cache: cache
 });
 

@@ -1,46 +1,21 @@
-# Getting Started with Create React App
+Project template generated with react creat app typescript template 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+App.tsx handles the routing.
+It imports pages and componenets which are in their respective folders.
 
-## Available Scripts
+Pages means the main home page and the article view page.
 
-In the project directory, you can run:
+sorry the css is a bit all over the place.
 
-### `npm start`
+I used apollo client.
+query.ts is only used to specify my quries and then by runnign npm run codegen(as defined in json.package), it will generate the types and react hooks for me automatically which is in the generated folder.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Problems I have:
+1, infinite loading, when i inspect network request, i send more than 1 request everytime I load more data, and on loading the page intially, there are 40+ requests made and I am not sure where are they coming from. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+I can't manage to put fetchmore in a react use effect hook as the results are unpredictable. 
+i am not sure why that is the case, I circumvent it by clicking a button which call fetchmore and disabling it right after for 3000ms. as if i dont do that, it will keep pressing the button (I suspect the useeffect hook is called mutiple times causing this behaviour but why that is I dont know, I only started to use react 2 weeks ago, sorry about that!)
 
-### `npm test`
+I am skeptical of the way I architect my code and I am sure it is not best practices, please advise how can I improve !!
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

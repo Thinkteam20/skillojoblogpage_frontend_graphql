@@ -7,13 +7,14 @@ import Footer from "../components/footer"
 import '../App.css';
 import '../mobile.css'
 
-import {useBooksQuery} from "../generated/graphql"
+import {useArticlesQuery} from "../generated/graphql"
 import Card from "../components/Card"
 
 import { GraphQLClient, ClientContext } from 'graphql-hooks'
 
 import {NetworkStatus} from '@apollo/client';
 import CSS from 'csstype';
+import { json } from 'stream/consumers';
 
 const buttonStyles: CSS.Properties = {
   display: 'none'
@@ -41,7 +42,7 @@ useEffect(()=>{
   const observer =new IntersectionObserver((entries)=>{
     const entry = entries[0]
     
-    if(entry.isIntersecting===true &&data?.books.hasNextPage&&data  && networkStatus !== NetworkStatus.fetchMore){
+    if(entry.isIntersecting===true &&data  && networkStatus !== NetworkStatus.fetchMore){
       console.log("in")
       // this is the problem, I cant put fetchmore here 
       // for example if i put fetchmore(....), it will just blowup.
@@ -50,7 +51,7 @@ useEffect(()=>{
       
 
 
-      buttonref.current?.click()
+      // buttonref.current?.click()
       
       
       
@@ -77,14 +78,17 @@ useEffect(()=>{
 })
 
 
-  const { data, fetchMore, networkStatus, } = useBooksQuery({
-    variables: { first: 10 },
-    notifyOnNetworkStatusChange: true
+  const { data, fetchMore, networkStatus, } = useArticlesQuery({
+   variables: {
+       
+       take: 2,
+       
+    },
   });
 
   
 
-  if (!data || !data.books) {
+  if (!data || !data) {
     return <div>"loading</div>;
   }
 
@@ -98,33 +102,34 @@ useEffect(()=>{
     
     fetchMore({
       variables: {
-        first: 10,
+        first: 2,
         cursor:
-          data.books.books[data.books.books.length - 1].id
+          data.articlefeed[data.articlefeed.length - 1].id,
+          skip:1
       },
       updateQuery: (pv, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
           return pv;
         }
-        if ([...pv.books.books]==[...fetchMoreResult.books.books]) {
+        if ([...pv.articlefeed]==[...fetchMoreResult.articlefeed]) {
           return pv;
         }
         
 
         return {
-          books: {
-            __typename: "BooksResponse",
-            books: Array.from(new Set([
-              ...pv.books.books,
-              ...fetchMoreResult.books.books
+          
+            __typename: "Query",
+            articlefeed: Array.from(new Set([
+              ...pv.articlefeed,
+              ...fetchMoreResult.articlefeed
             ])),
-            hasNextPage: fetchMoreResult.books.hasNextPage
-          }
+            
+          
         };
       }
     })
 
-    setCount(data.books.books.length)
+    setCount(data.articlefeed.length)
   };
 
 
@@ -136,9 +141,10 @@ useEffect(()=>{
         <div className='wraps'>
           <div  className='grid' >
             <div >
-              {data.books.books.map(x=>(<Card id= {x.id} title={x.title}/>))}
+              {data.articlefeed.map(x=>(<Card id= {x.id} title={x.title}/>))}
+              {/* {JSON.stringify(data)} */}
               
-              <button style={buttonStyles} ref={buttonref} disabled={disable}onClick={load}>Load more</button>
+              <button ref={buttonref} disabled={disable}onClick={load}>Load more</button>
               
               
           
@@ -147,8 +153,8 @@ useEffect(()=>{
           </div>
           
         </div>
-        {networkStatus === 3 && data.books.hasNextPage&& <div className='loadinginfinitescroll'></div>}
-        {!data?.books.hasNextPage && <div>the end</div>}
+        {/* {networkStatus === 3 && data.books.hasNextPage&& <div className='loadinginfinitescroll'></div>}
+        {!data?.books.hasNextPage && <div>the end</div>} */}
         
       </main>
 

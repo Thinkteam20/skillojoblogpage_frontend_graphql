@@ -8,7 +8,7 @@ import logo from './logo.svg';
 import '../App.css';
 import '../mobile.css'
 
-import {useBooksQuery} from "../generated/graphql"
+import {useArticlesQuery} from "../generated/graphql"
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import '../index.css';
@@ -25,16 +25,16 @@ function Postpage() {
         
     })
 
-    const { data, fetchMore, networkStatus, } = useBooksQuery({
-        variables: { first: 1,cursor:String(Number(number)-1) },
-        notifyOnNetworkStatusChange: true
-      });
+    // const { data, fetchMore, networkStatus, } = useBooksQuery({
+    //     variables: { first: 1,cursor:String(Number(number)-1) },
+    //     notifyOnNetworkStatusChange: true
+    //   });
 
   return (
       
       <>
-      <div>{payload}</div>
-    <div>{JSON.stringify(data)}</div> 
+      {/* <div>{payload}</div>
+    <div>{JSON.stringify(data)}</div>  */}
      </>
     
 
