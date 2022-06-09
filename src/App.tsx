@@ -2,18 +2,8 @@ import React from "react";
 import { BrowserRouter,Route,Routes } from "react-router-dom";
 import Homepage from "./pages/Home"
 import Postpage from "./pages/postpage"
-
-import Navbar from "./components/navbar"
+import Navbar from './components/navbar'
 import Footer from "./components/footer"
-
-
-
-
-
-
-
-
-
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 
